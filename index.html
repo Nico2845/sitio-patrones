@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Patrones de Diseño — Visitor &amp; Interpreter</title>
+<meta name="description" content="Mini-sitio del equipo sobre los patrones de diseño Visitor e Interpreter — ESEN.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span> Patrones // GoF</div>
+    <nav class="crumbs"><a href="visitor.html">Visitor</a> &nbsp;·&nbsp; <a href="interpreter.html">Interpreter</a></nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="wrap">
+      <div class="pill-combo">
+        <span class="pill solid">Software Design Patterns</span>
+        <span class="pill">ESEN</span>
+      </div>
+      <h1>Dos patrones del catálogo GoF,<br>explicados de verdad.</h1>
+      <p class="lead">
+        El catálogo clásico tiene 23 patrones; en clase vimos 12. Este sitio cubre los dos
+        que le tocaron a nuestro equipo — con el mismo esqueleto de 5 puntos que usamos en
+        clase: el problema, la solución, código mínimo, cuándo sí / cuándo no, y un ejemplo real.
+      </p>
+      <div class="actions">
+        <a class="btn primary" href="visitor.html">Ver Visitor →</a>
+        <a class="btn ghost" href="interpreter.html">Ver Interpreter →</a>
+      </div>
+
+      <div class="titleblock">
+        <div class="cell"><span class="k">Grupo</span><span class="v fill">Electrodomésticos a manivela</span></div>
+        <div class="cell"><span class="k">Patrones</span><span class="v">Visitor · Interpreter</span></div>
+        <div class="cell"><span class="k">Entrega</span><span class="v">Vie 17 julio</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="sheets">
+        <a class="sheet c1" href="visitor.html">
+          <span class="tag">Patrón de comportamiento</span>
+          <h3>Visitor</h3>
+          <p>Cómo generar reportes distintos por tipo de documento sin llenar el generador
+             de <code>if (instanceof …)</code>.</p>
+          <span class="go">Entrar →</span>
+        </a>
+        <a class="sheet c2" href="interpreter.html">
+          <span class="tag">Patrón de comportamiento</span>
+          <h3>Interpreter</h3>
+          <p>Cómo evaluar expresiones aritméticas sin un <code>switch</code> que crece
+             cada vez que se agrega un operador.</p>
+          <span class="go">Entrar →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block tint">
+    <div class="wrap">
+      <h2><span class="idx">§</span> Registro de aportes</h2>
+      <p style="color:var(--muted); max-width:70ch;">
+        Registros de aportes individuales :)
+      </p>
+      <table class="aportes">
+        <tr><th>Rol</th><th>Integrante(s)</th><th>Qué produjo</th></tr>
+        <tr>
+          <td>Investigación + guion — Visitor</td>
+          <td class="name">José Roberto Avilés Rosales</td>
+          <td>El problema, la solución, cuándo sí/no y ejemplo real de Visitor.</td>
+        </tr>
+        <tr>
+          <td>Investigación + guion — Interpreter</td>
+          <td class="name">Kevin Elías Luna Palacios</td>
+          <td>Lo mismo, para Interpreter.</td>
+        </tr>
+        <tr>
+          <td>Código (ambos patrones)</td>
+          <td class="name">Carlos Antonio Cruz Méndez</td>
+          <td>Antes / después / no-refactor en PHP; revisó que corran de verdad.</td>
+        </tr>
+        <tr>
+          <td>Diagramas (ambos patrones)</td>
+          <td class="name">Eliezer Alexander Martines Chamúl</td>
+          <td>Diagramas de clases, coordinó con investigación.</td>
+        </tr>
+        <tr>
+          <td>Sitio + despliegue</td>
+          <td class="name">Jade Nicole Cárcamo Vasquez</td>
+          <td>Repo, despliegue en Netlify, verificación desde otro dispositivo.</td>
+        </tr>
+        <tr>
+          <td>Video (ambos)</td>
+          <td class="name">Sheyla Alexandra Sarmiento Aragón</td>
+          <td>Edita y arma los dos videos — todos aparecen grabando su parte.</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <span>Software Design Patterns · ESEN</span>
+    <span>Electrodomesticos a manivela</span>
+  </div>
+</footer>
+
+</body>
+</html>

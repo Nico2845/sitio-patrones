@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Interpreter — Patrones de Diseño</title>
+<meta name="description" content="Patrón de diseño Interpreter: el problema, la solución, código mínimo, cuándo usarlo y un ejemplo real.">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span> Patrones // GoF</div>
+    <nav class="crumbs"><a href="index.html">Inicio</a> &nbsp;·&nbsp; <a href="visitor.html">← Visitor</a></nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero" style="padding-bottom:20px;">
+    <div class="blob b1" style="opacity:.3;"></div>
+    <div class="blob b2" style="opacity:.25;"></div>
+    <div class="wrap">
+      <div class="pill-combo">
+        <span class="pill solid">Patrón de comportamiento</span>
+        <span class="pill">Lámina 02</span>
+      </div>
+      <h1>Interpreter</h1>
+      <p class="lead">Cómo evaluar expresiones aritméticas sin un <code>switch</code>
+        que se vuelve más largo cada vez que aparece un operador nuevo.</p>
+    </div>
+  </section>
+
+  <section class="block" style="padding-top:10px;">
+    <div class="wrap">
+      <h2><span class="idx">1</span> El problema</h2>
+      <div class="bigquote">
+        <p>
+          Un <code>ExpressionEvaluator</code> recibe un operador (<code>"+"</code>,
+          <code>"-"</code>) y dos números, y usa un <code>switch</code> para decidir qué
+          operación aplicar. Funciona — hasta que alguien pide un operador que el switch no
+          contempla (ej. multiplicación, o algo como <code>"greater"</code>) y el código
+          revienta con una excepción.
+        </p>
+      </div>
+      <div class="body center">
+        <p>
+          El dolor real: cada operador nuevo obliga a volver a abrir
+          <code>ExpressionEvaluator</code> y agregarle un <code>case</code> más. El switch
+          crece indefinidamente y toda la lógica de evaluación vive amontonada en un solo
+          lugar.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block tint">
+    <div class="wrap">
+      <h2><span class="idx">2</span> La solución</h2>
+      <div class="body wide">
+        <p>
+          Cada operación se vuelve su propia clase que implementa una interfaz común
+          <code>Expression</code> con un método <code>interpret()</code>. Los números son
+          expresiones "hoja" (<code>Number</code>), y las operaciones
+          (<code>AdditionExpression</code>, <code>SubtractionExpression</code>,
+          <code>MultiplicationExpression</code>) son expresiones "compuestas": guardan dos
+          expresiones (<code>left</code>, <code>right</code>) y se interpretan llamando
+          recursivamente a <code>interpret()</code> de cada una. Agregar un operador nuevo es
+          agregar una clase — no tocar un switch existente.
+        </p>
+      </div>
+
+      <div class="diagram-wrap">
+        <div class="device-frame browser">
+          <div class="chrome"><span></span><span></span><span></span></div>
+          <div class="screen">
+            <div class="diagram">
+              <svg viewBox="0 0 700 400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagrama de clases del patrón Interpreter aplicado a expresiones aritméticas">
+                <defs>
+                  <marker id="tri-i" markerWidth="14" markerHeight="12" refX="12" refY="6" orient="auto">
+                    <path d="M0,0 L12,6 L0,12 Z" fill="#FBF3EF" stroke="#890620" stroke-width="1.2"/>
+                  </marker>
+                </defs>
+
+                <!-- realization arrows -->
+                <line x1="120" y1="160" x2="300" y2="80" stroke="#890620" stroke-width="1.4" stroke-dasharray="6 4" marker-end="url(#tri-i)"/>
+                <line x1="350" y1="160" x2="345" y2="80" stroke="#890620" stroke-width="1.4" stroke-dasharray="6 4" marker-end="url(#tri-i)"/>
+                <line x1="580" y1="160" x2="400" y2="80" stroke="#890620" stroke-width="1.4" stroke-dasharray="6 4" marker-end="url(#tri-i)"/>
+
+                <g font-family="IBM Plex Mono">
+                  <!-- Expression -->
+                  <rect x="250" y="20" width="200" height="60" rx="10" fill="#FBF3EF" stroke="#890620" stroke-width="1.3"/>
+                  <line x1="250" y1="50" x2="450" y2="50" stroke="#890620" stroke-width="1"/>
+                  <text x="350" y="38" text-anchor="middle" fill="#2C0703" font-size="13.5" font-weight="700">«interface» Expression</text>
+                  <text x="262" y="70" fill="#6E4A44" font-size="11">+ interpret(): int</text>
+
+                  <!-- Number -->
+                  <rect x="30" y="160" width="180" height="70" rx="10" fill="#FBF3EF" stroke="#890620" stroke-width="1.3"/>
+                  <text x="120" y="188" text-anchor="middle" fill="#2C0703" font-size="13" font-weight="700">Number</text>
+                  <text x="45" y="212" fill="#6E4A44" font-size="11">- value: int</text>
+
+                  <!-- AdditionExpression -->
+                  <rect x="250" y="160" width="210" height="100" rx="10" fill="#FBF3EF" stroke="#890620" stroke-width="1.3"/>
+                  <text x="355" y="188" text-anchor="middle" fill="#2C0703" font-size="12.5" font-weight="700">AdditionExpression</text>
+                  <text x="264" y="212" fill="#6E4A44" font-size="11">- left: Expression</text>
+                  <text x="264" y="230" fill="#6E4A44" font-size="11">- right: Expression</text>
+                  <text x="264" y="250" fill="#B6465F" font-size="10.5">(composición recursiva)</text>
+
+                  <!-- Subtraction / Multiplication -->
+                  <rect x="490" y="160" width="180" height="100" rx="10" fill="#FBF3EF" stroke="#890620" stroke-width="1.3"/>
+                  <text x="580" y="188" text-anchor="middle" fill="#2C0703" font-size="12" font-weight="700">Subtraction /</text>
+                  <text x="580" y="204" text-anchor="middle" fill="#2C0703" font-size="12" font-weight="700">Multiplication</text>
+                  <text x="504" y="226" fill="#6E4A44" font-size="10.5">Expression</text>
+                  <text x="504" y="244" fill="#B6465F" font-size="10">(misma forma que Addition)</text>
+                </g>
+                <text x="20" y="385" fill="#B6465F" font-size="11">línea punteada = implementa · composición: Addition/Subtraction/Multiplication contienen 2 Expression (left, right)</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2><span class="idx">3</span> Código mínimo</h2>
+      <div class="codewindow">
+        <div class="label"><span class="pill">after.php</span> solución con Interpreter</div>
+        <pre><span class="cm">// Cada expresión ahora es su propia clase</span>
+<span class="kw">interface</span> <span class="cls">Expression</span> {
+    <span class="kw">public function</span> interpret();
+}
+
+<span class="kw">class</span> <span class="cls">Number</span> <span class="kw">implements</span> Expression
+{
+    <span class="kw">public function</span> __construct(<span class="kw">private int</span> $value) {}
+
+    <span class="kw">public function</span> interpret(): <span class="kw">int</span>
+    {
+        <span class="kw">return</span> $this->value;
+    }
+}
+
+<span class="cm">// Usa recursividad para interpretar una cadena de expresiones</span>
+<span class="kw">class</span> <span class="cls">AdditionExpression</span> <span class="kw">implements</span> Expression
+{
+    <span class="kw">public function</span> __construct(
+        <span class="kw">private</span> Expression $left,
+        <span class="kw">private</span> Expression $right
+    ) {}
+
+    <span class="kw">public function</span> interpret(): <span class="kw">int</span>
+    {
+        <span class="kw">return</span> $this->left->interpret() + $this->right->interpret();
+    }
+}
+
+<span class="cm">// SubtractionExpression y MultiplicationExpression siguen la misma forma</span>
+<span class="cm">// (mismo constructor, cambia solo el operador en interpret())</span>
+
+$result = <span class="kw">new</span> AdditionExpression(
+    <span class="kw">new</span> Number(10),
+    <span class="kw">new</span> Number(5)
+);
+
+echo $result->interpret(); <span class="cm">// 15</span></pre>
+      </div>
+    </div>
+  </section>
+
+  <section class="block tint">
+    <div class="wrap">
+      <h2><span class="idx">4</span> Cuándo sí / cuándo no</h2>
+      <div class="grid2">
+        <div class="col si">
+          <h4>SÍ usarlo cuando…</h4>
+          <ul>
+            <li>Hay que evaluar reglas o expresiones que cambian/crecen con frecuencia.</li>
+            <li>La gramática (conjunto de operaciones) es pequeña y bien definida.</li>
+            <li>Se quieren componer expresiones anidadas de forma recursiva.</li>
+          </ul>
+        </div>
+        <div class="col no">
+          <h4>NO usarlo cuando…</h4>
+          <ul>
+            <li>Solo hay una operación (ej. sumar) y no se espera que crezca.</li>
+            <li>La gramática crecería demasiado — las clases se multiplican sin control.</li>
+            <li>Introducirlo solo complicaría el código sin beneficio real (YAGNI).</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="codepair">
+        <div class="codewindow">
+          <div class="label"><span class="pill">before.php</span> code smell</div>
+          <pre><span class="kw">class</span> <span class="cls">ExpressionEvaluator</span>
+{
+    <span class="kw">public function</span> evaluate(<span class="kw">string</span> $operator, <span class="kw">int</span> $left, <span class="kw">int</span> $right): <span class="kw">int</span>
+    {
+        <span class="cm">// switch que crecerá en el futuro</span>
+        <span class="kw">switch</span> ($operator) {
+            <span class="kw">case</span> <span class="str">'+'</span>:
+                <span class="kw">return</span> $left + $right;
+            <span class="kw">case</span> <span class="str">'-'</span>:
+                <span class="kw">return</span> $left - $right;
+            <span class="kw">default</span>:
+                <span class="kw">throw new</span> Exception(<span class="str">"Unknown operator"</span>);
+        }
+    }
+}</pre>
+        </div>
+        <div class="codewindow">
+          <div class="label"><span class="pill">no_refactor.php</span> cuándo NO conviene</div>
+          <pre><span class="cm">// Solo se hace una suma; no hay un set de
+// expresiones que crecerá. Interpreter aquí
+// solo complicaría el código sin beneficio</span>
+<span class="kw">function</span> add(<span class="kw">int</span> $left, <span class="kw">int</span> $right): <span class="kw">int</span>
+{
+    <span class="kw">return</span> $left + $right;
+}
+
+echo add(10, 5);</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <h2><span class="idx">5</span> Un ejemplo real</h2>
+      <div class="pending">
+        <span class="flag">Pendiente</span>
+        <p><strong>Falta el ejemplo real de Interpreter.</strong> Tiene que ser verificable, no inventado.</p>
+        <p class="howto">Pistas de dónde buscar: motores de expresiones regulares, parsers de
+          fórmulas tipo Excel, query builders de un SDK, o motores de reglas de negocio (rule
+          engines). Cuando lo tengan, reemplacen este bloque por 1–2 párrafos citando la fuente.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block tint">
+    <div class="wrap">
+      <h2><span class="idx">▶</span> Video</h2>
+      <div class="videoblock">
+        <div class="device-frame phone">
+          <div class="notch"></div>
+          <div class="screen">
+            <strong>Video de Interpreter</strong>
+            <span>3–5 min · mismo orden que esta página</span>
+            <!-- PENDIENTE: reemplazar href="#" por el link real -->
+            <a class="btn primary" href="#" target="_blank" rel="noopener" style="width:100%; justify-content:center;">Ver video (pendiente)</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block">
+    <div class="wrap">
+      <div class="pill-combo"><span class="pill">Para ir más lejos</span></div>
+      <ul class="sources">
+        <li>Gamma, Helm, Johnson &amp; Vlissides. (1994). <em>Design Patterns: Elements of Reusable Object-Oriented Software</em>. Addison-Wesley.</li>
+        <li>GeeksforGeeks. (2024). <em>Interpreter Design Pattern</em>. <a href="https://www.geeksforgeeks.org/interpreter-design-pattern/" target="_blank" rel="noopener">geeksforgeeks.org</a></li>
+        <li>Refactoring.Guru. <em>Patrón Interpreter</em>. <a href="https://refactoring.guru/es/design-patterns/interpreter" target="_blank" rel="noopener">refactoring.guru</a></li>
+        <li>SourceMaking. <em>Interpreter Design Pattern</em>. <a href="https://sourcemaking.com/design_patterns/interpreter" target="_blank" rel="noopener">sourcemaking.com</a></li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <a href="visitor.html">← Visitor</a>
+    <a href="index.html">Inicio →</a>
+  </div>
+</footer>
+
+</body>
+</html>
