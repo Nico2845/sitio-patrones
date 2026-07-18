@@ -266,17 +266,23 @@ echo add(10, 5);</pre>
   </section>
 
   <section class="block">
-    <div class="wrap">
-      <h2><span class="idx">5</span> Un ejemplo real</h2>
-      <div class="pending">
-        <span class="flag">Pendiente</span>
-        <p><strong>Falta el ejemplo real de Interpreter.</strong> Tiene que ser verificable, no inventado.</p>
-        <p class="howto">Pistas de dónde buscar: motores de expresiones regulares, parsers de
-          fórmulas tipo Excel, query builders de un SDK, o motores de reglas de negocio (rule
-          engines). Cuando lo tengan, reemplacen este bloque por 1–2 párrafos citando la fuente.</p>
-      </div>
+  <div class="wrap">
+    <h2><span class="idx">5</span> Un ejemplo real</h2>
+    <div class="body">
+      <p>
+        Un gran ejemplo en el mundo real lo encontramos en el framework <strong>Symfony</strong>, 
+        una de las herramientas de desarrollo web más importantes de la actualidad. Cuenta con un 
+        componente llamado <code>ExpressionLanguage</code>.
+      </p>
+      <p>
+        Este motor permite a las empresas escribir reglas de negocio complejas en texto (por ejemplo, 
+        para calcular descuentos dinámicos en una tienda online) y, por detrás, usa el patrón 
+        <strong>Interpreter</strong> para convertir ese texto en un árbol de objetos que se evalúa de 
+        forma segura, limpia y ultra mantenible.
+      </p>
     </div>
-  </section>
+  </div>
+</section>
 
   <section class="block tint">
     <div class="wrap">
